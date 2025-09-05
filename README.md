@@ -150,8 +150,8 @@ Os módulos enviados ou baixados seguem o formato:
       "children": [
         {
           "type": "file",
-          "name": "otario.txt",
-          "content": "seu otario"
+          "name": "elogios.txt",
+          "content": "você é muito cheiroso(a)"
         }
       ]
     }
