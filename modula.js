@@ -149,6 +149,7 @@ program
       response.data.forEach((mod, index) => {
         console.log(`${chalk.bold('Nome:')} ${chalk.whiteBright(mod.name)}`);
         console.log(`${chalk.bold('ID:')} ${chalk.whiteBright(mod._id)}`);
+        console.log(`${chalk.bold('Publicador:')} ${chalk.whiteBright(mod.publisherId)}`);
         console.log(`${chalk.bold('Descrição:')} ${chalk.whiteBright(mod.description)}`);
         console.log(`${chalk.bold('Ferramenta:')} ${chalk.whiteBright(mod.tool)}`);
         if (index < response.data.length - 1) {
