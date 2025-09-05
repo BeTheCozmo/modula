@@ -1,10 +1,10 @@
 {
-  "name": "modula",
+  "name": "@bethecozmo/modula",
   "version": "1.0.0",
   "description": "CLI para gerenciar módulos programáticos no sistema Modula",
   "main": "modula.js",
   "bin": {
-    "modula": "./modula.js"
+    "modula": "modula.js"
   },
   "scripts": {
     "start": "node modula.js"
@@ -25,7 +25,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/BeTheCozmo/modula"
+    "url": "git+https://github.com/BeTheCozmo/modula.git"
   },
   "homepage": "https://github.com/BeTheCozmo/modula#readme",
   "bugs": {

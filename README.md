@@ -146,7 +146,7 @@ Os módulos enviados ou baixados seguem o formato:
     },
     {
       "type": "directory",
-      "name": "pasta",
+      "name": "segredos",
       "children": [
         {
           "type": "file",
@@ -159,17 +159,17 @@ Os módulos enviados ou baixados seguem o formato:
 }
 ```
 
-## Notas
+## Notas (Desconsidere se não fará manutenção)
 
 - **Autenticação**: Todos os comandos, exceto `register` e `login`, requerem um token válido (obtido via `login`).
 - **Servidor**: Certifique-se de que o servidor Modula está rodando e acessível na URL configurada.
 - **Erro na rota DELETE**: O comando `delete` usa `DELETE /module/:id`. Confirme com o backend se a rota está correta.
-- **Token**: O login assume que a rota `/auth/login` retorna `{ token: '...' }`. Ajuste o código se o formato for diferente.
+- **Token**: O login assume que a rota `/auth/login` retorna `{ access_token: '...' }`. Ajuste o código se o formato for diferente.
 
 ## Solução de Problemas
 
 - **Erro: "command not found: modula"**:
-  - Verifique se instalou globalmente com `npm install -g modula`.
+  - Verifique se instalou globalmente com `npm install -g @bethecozmo/modula`.
   - Confirme que o npm global está no PATH: `npm bin -g`.
 - **Erro: "Você precisa logar primeiro"**:
   - Execute `modula login` antes de usar outros comandos.
