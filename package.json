@@ -25,10 +25,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/seu-usuario/modula.git"
+    "url": "https://github.com/BeTheCozmo/modula"
   },
-  "homepage": "https://github.com/seu-usuario/modula#readme",
+  "homepage": "https://github.com/BeTheCozmo/modula#readme",
   "bugs": {
-    "url": "https://github.com/seu-usuario/modula/issues"
+    "url": "https://github.com/BeTheCozmo/modula/issues"
   }
 }
