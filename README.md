@@ -80,7 +80,7 @@ modula [comando]
 | `modula logout`          | Remove o token armazenado.                                                |
 | `modula list`            | Lista todos os módulos registrados no servidor.                            |
 | `modula view <id>`       | Exibe detalhes de um módulo específico pelo ID.                            |
-| `modula download <id> [targetPath]` | Baixa o conteúdo de um módulo e o reconstrói localmente (padrão: diretório atual). |
+| `modula download <id>` | Baixa o conteúdo de um módulo e o reconstrói localmente (padrão: diretório atual). |
 | `modula upload <localPath>` | Envia um diretório local como novo módulo, com nome, descrição e ferramenta. |
 | `modula delete <id>`     | Exclui um módulo do servidor (com confirmação).                            |
 
@@ -113,9 +113,9 @@ Use `modula help` ou `modula [comando] --help` para mais detalhes.
 
 5. **Baixar um módulo**:
    ```bash
-   modula download 68ba9832f3b5029aed2ea274 ./my-module
+   modula download 68ba9832f3b5029aed2ea274
    ```
-   - Reconstrói a estrutura do módulo em `./my-module` (ou diretório atual, se não especificado).
+   - Reconstrói a estrutura do módulo no diretório atual com o nome registrado do módulo.
 
 6. **Enviar um módulo**:
    ```bash

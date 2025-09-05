@@ -63,16 +63,26 @@ function buildNodeTree(dirPath) {
 
 // Função recursiva para criar estrutura local a partir de nodes (para download)
 function createFromNodes(nodes, basePath) {
+  // Garantir que o diretório base existe
+  if (!fs.existsSync(basePath)) {
+    fs.mkdirSync(basePath, { recursive: true });
+  }
+
   nodes.forEach(node => {
     const nodePath = path.join(basePath, node.name);
     if (node.type === 'directory') {
-      if (!fs.existsSync(nodePath)) {
-        fs.mkdirSync(nodePath, { recursive: true });
-      }
+      // Criar diretório (recursivamente, se necessário)
+      fs.mkdirSync(nodePath, { recursive: true });
       if (node.children) {
         createFromNodes(node.children, nodePath);
       }
     } else if (node.type === 'file') {
+      // Garantir que o diretório pai do arquivo existe
+      const dirName = path.dirname(nodePath);
+      if (!fs.existsSync(dirName)) {
+        fs.mkdirSync(dirName, { recursive: true });
+      }
+      // Escrever o arquivo
       fs.writeFileSync(nodePath, node.content || '');
     }
   });
@@ -159,16 +169,17 @@ program
     }
   });
 
-// Comando: download <id> [targetPath]
+// Comando: download <id>
 program
-  .command('download <id> [targetPath]')
-  .description('Baixa o conteúdo de um módulo e constrói na pasta atual ou em [targetPath]')
-  .action(async (id, targetPath) => {
-    const buildPath = targetPath || process.cwd();
+  .command('download <id>')
+  .description('Baixa o conteúdo de um módulo e constrói na pasta atual')
+  .action(async (id) => {
+    const buildPath = process.cwd() + '/'  ;
     try {
       const response = await axios.get(`${BASE_URL}/module/${id}/content`, { headers: getAuthHeaders() });
       const nodes = response.data;
-      createFromNodes(nodes, buildPath);
+      const buildPath = process.cwd() + '/' + nodes.name;
+      createFromNodes(nodes.content, buildPath);
       console.log(`Módulo baixado e construído em: ${buildPath}`);
     } catch (error) {
       console.error('Erro ao baixar módulo:', error.response ? error.response.data : error.message);
