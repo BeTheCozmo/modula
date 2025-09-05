@@ -9,7 +9,7 @@ const axios = require('axios');
 const chalk = require('chalk');
 
 const program = new commander.Command();
-const BASE_URL = process.env.MODULA_API_URL || 'http://localhost:3031';
+const BASE_URL = process.env.MODULA_API_URL || 'http://10.8.0.2:3031';
 const CONFIG_DIR = path.join(os.homedir(), '.modula');
 const CONFIG_FILE = path.join(CONFIG_DIR, 'config.json');
 
