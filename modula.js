@@ -215,6 +215,10 @@ program
       choices: [
         { name: 'angular', value: 'angular' },
         { name: 'nestjs', value: 'nestjs' },
+        { name: 'react', value: 'react' },
+        { name: 'vue', value: 'vue' },
+        { name: 'bash', value: 'bash' },
+        { name: 'js-scripts', value: 'js-scripts' },
         { name: 'other', value: 'other' },
       ],
     });
