@@ -64,9 +64,7 @@ function buildNodeTree(dirPath) {
 // Função recursiva para criar estrutura local a partir de nodes (para download)
 function createFromNodes(nodes, basePath) {
   // Garantir que o diretório base existe
-  if (!fs.existsSync(basePath)) {
-    fs.mkdirSync(basePath, { recursive: true });
-  }
+  if (!fs.existsSync(basePath)) { fs.mkdirSync(basePath, { recursive: true }); }
 
   nodes.forEach(node => {
     const nodePath = path.join(basePath, node.name);
@@ -174,7 +172,6 @@ program
   .command('download <id>')
   .description('Baixa o conteúdo de um módulo e constrói na pasta atual')
   .action(async (id) => {
-    const buildPath = process.cwd() + '/'  ;
     try {
       const response = await axios.get(`${BASE_URL}/module/${id}/content`, { headers: getAuthHeaders() });
       const nodes = response.data;

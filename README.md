@@ -25,7 +25,7 @@ Uma interface de linha de comando (CLI) poderosa para gerenciar módulos program
 Instale o Modula CLI globalmente via npm:
 
 ```bash
-npm install -g modula
+npm install -g @bethecozmo/modula
 ```
 
 Isso registra o comando `modula` para uso em qualquer diretório.
