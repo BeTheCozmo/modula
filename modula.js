@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const commander = require('commander');
-const { input, password, select, confirm } = require('@inquirer/prompts'); // Nova importação
+const { input, password, select, confirm } = require('@inquirer/prompts');
 const axios = require('axios');
 const chalk = require('chalk');
 
@@ -13,7 +13,6 @@ const BASE_URL = process.env.MODULA_API_URL || 'http://10.8.0.2:3031';
 const CONFIG_DIR = path.join(os.homedir(), '.modula');
 const CONFIG_FILE = path.join(CONFIG_DIR, 'config.json');
 
-// Função para carregar/salvar config (incluindo token)
 function loadConfig() {
   if (!fs.existsSync(CONFIG_DIR)) {
     fs.mkdirSync(CONFIG_DIR, { recursive: true });
@@ -28,7 +27,6 @@ function saveConfig(config) {
   fs.writeFileSync(CONFIG_FILE, JSON.stringify(config));
 }
 
-// Função para obter headers com auth
 function getAuthHeaders() {
   const config = loadConfig();
   if (!config.token) {
@@ -38,7 +36,6 @@ function getAuthHeaders() {
   return { Authorization: `Bearer ${config.token}` };
 }
 
-// Função recursiva para capturar estrutura de diretório (para upload)
 function buildNodeTree(dirPath) {
   const nodes = [];
   const items = fs.readdirSync(dirPath);
@@ -62,9 +59,7 @@ function buildNodeTree(dirPath) {
   return nodes;
 }
 
-// Função recursiva para criar estrutura local a partir de nodes (para download)
 function createFromNodes(nodes, basePath) {
-  // Garantir que o diretório base existe
   if (!fs.existsSync(basePath)) { fs.mkdirSync(basePath, { recursive: true }); }
 
   nodes.forEach(node => {
@@ -76,12 +71,10 @@ function createFromNodes(nodes, basePath) {
         createFromNodes(node.children, nodePath);
       }
     } else if (node.type === 'file') {
-      // Garantir que o diretório pai do arquivo existe
       const dirName = path.dirname(nodePath);
       if (!fs.existsSync(dirName)) {
         fs.mkdirSync(dirName, { recursive: true });
       }
-      // Escrever o arquivo
       fs.writeFileSync(nodePath, node.content || '');
     }
   });
@@ -152,8 +145,9 @@ program
         console.log(`${chalk.bold('Publicador:')} ${chalk.whiteBright(mod.publisherId)}`);
         console.log(`${chalk.bold('Descrição:')} ${chalk.whiteBright(mod.description)}`);
         console.log(`${chalk.bold('Ferramenta:')} ${chalk.whiteBright(mod.tool)}`);
+        console.log(`${chalk.bold('Downloads:')} ${chalk.whiteBright(mod.downloadCount)}`);
         if (index < response.data.length - 1) {
-          console.log(chalk.gray('---'));
+          console.log(chalk.gray('\n---\n'));
         }
       });
       console.log(chalk.cyan.bold('\n===========================\n'));
@@ -235,6 +229,28 @@ program
       console.log(chalk.green('Módulo enviado com sucesso:'), response.data);
     } catch (error) {
       console.error(chalk.red('Erro ao enviar módulo:'), error.response ? error.response.data : error.message);
+    }
+  });
+
+// Comando: update <id> <localPath>
+program
+  .command('update <id> <localPath>')
+  .description('Captura estrutura de diretório local e atualiza o módulo')
+  .action(async (id, localPath) => {
+    if (!fs.existsSync(localPath)) {
+      console.error('Erro: Caminho local não existe.');
+      return;
+    }
+
+    const nodes = buildNodeTree(localPath);
+    const payload = {
+      nodes,
+    };
+    try {
+      const response = await axios.patch(`${BASE_URL}/module/${id}/content`, payload, { headers: getAuthHeaders() });
+      console.log(chalk.green('Módulo atualizado com sucesso:'), response.data);
+    } catch (error) {
+      console.error(chalk.red('Erro ao atualizar módulo:'), error.response ? error.response.data : error.message);
     }
   });
 
