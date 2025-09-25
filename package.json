@@ -1,6 +1,6 @@
 {
   "name": "@bethecozmo/modula",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "CLI para gerenciar módulos programáticos no sistema Modula",
   "main": "modula.js",
   "bin": {
