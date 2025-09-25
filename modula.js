@@ -67,14 +67,10 @@ function createFromNodes(nodes, basePath) {
     if (node.type === 'directory') {
       // Criar diretório (recursivamente, se necessário)
       fs.mkdirSync(nodePath, { recursive: true });
-      if (node.children) {
-        createFromNodes(node.children, nodePath);
-      }
+      if (node.children) createFromNodes(node.children, nodePath);
     } else if (node.type === 'file') {
       const dirName = path.dirname(nodePath);
-      if (!fs.existsSync(dirName)) {
-        fs.mkdirSync(dirName, { recursive: true });
-      }
+      if (!fs.existsSync(dirName)) fs.mkdirSync(dirName, { recursive: true });
       fs.writeFileSync(nodePath, node.content || '');
     }
   });
