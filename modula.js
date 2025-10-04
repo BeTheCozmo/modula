@@ -9,17 +9,13 @@ const axios = require('axios');
 const chalk = require('chalk');
 
 const program = new commander.Command();
-const BASE_URL = process.env.MODULA_API_URL || 'http://10.8.0.2:3031';
+const BASE_URL = process.env.MODULA_API_URL || 'http://127.0.0.1:3031';
 const CONFIG_DIR = path.join(os.homedir(), '.modula');
 const CONFIG_FILE = path.join(CONFIG_DIR, 'config.json');
 
 function loadConfig() {
-  if (!fs.existsSync(CONFIG_DIR)) {
-    fs.mkdirSync(CONFIG_DIR, { recursive: true });
-  }
-  if (!fs.existsSync(CONFIG_FILE)) {
-    fs.writeFileSync(CONFIG_FILE, JSON.stringify({}));
-  }
+  if (!fs.existsSync(CONFIG_DIR)) fs.mkdirSync(CONFIG_DIR, { recursive: true });
+  if (!fs.existsSync(CONFIG_FILE)) fs.writeFileSync(CONFIG_FILE, JSON.stringify({}));
   return JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf-8'));
 }
 
@@ -65,7 +61,6 @@ function createFromNodes(nodes, basePath) {
   nodes.forEach(node => {
     const nodePath = path.join(basePath, node.name);
     if (node.type === 'directory') {
-      // Criar diretório (recursivamente, se necessário)
       fs.mkdirSync(nodePath, { recursive: true });
       if (node.children) createFromNodes(node.children, nodePath);
     } else if (node.type === 'file') {
@@ -108,7 +103,7 @@ program
     try {
       const response = await axios.post(`${BASE_URL}/auth/login`, { email, password: pwd });
       const config = loadConfig();
-      config.token = response.data.access_token; // Assumindo que o response tem { token: '...' }
+      config.token = response.data.access_token;
       saveConfig(config);
       console.log(chalk.green('Login bem-sucedido. Token armazenado.'));
     } catch (error) {
@@ -239,11 +234,8 @@ program
     }
 
     const nodes = buildNodeTree(localPath);
-    const payload = {
-      nodes,
-    };
     try {
-      const response = await axios.patch(`${BASE_URL}/module/${id}/content`, payload, { headers: getAuthHeaders() });
+      const response = await axios.patch(`${BASE_URL}/module/${id}/content`, { nodes }, { headers: getAuthHeaders() });
       console.log(chalk.green('Módulo atualizado com sucesso:'), response.data);
     } catch (error) {
       console.error(chalk.red('Erro ao atualizar módulo:'), error.response ? error.response.data : error.message);
